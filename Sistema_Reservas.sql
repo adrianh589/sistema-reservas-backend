@@ -1,3 +1,5 @@
+
+
 -- Crear la base de datos
 CREATE DATABASE IF NOT EXISTS sistema_reservas;
 USE sistema_reservas;
@@ -9,6 +11,14 @@ CREATE TABLE Tipos_Documento (
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+INSERT INTO Tipos_Documento (tipo) VALUES ('C.C.');
+INSERT INTO Tipos_Documento (tipo) VALUES ('Pasaporte');
+INSERT INTO Tipos_Documento (tipo) VALUES ('T.I.');
+INSERT INTO Tipos_Documento (tipo) VALUES ('C.E.');
+INSERT INTO Tipos_Documento (tipo) VALUES ('Registro Civil');
+INSERT INTO Tipos_Documento (tipo) VALUES ('Tarjeta de Identidad');
+INSERT INTO Tipos_Documento (tipo) VALUES ('NIT');
+INSERT INTO Tipos_Documento (tipo) VALUES ('Otro');
 
 -- Tabla Administradores
 CREATE TABLE Administradores (
@@ -19,12 +29,14 @@ CREATE TABLE Administradores (
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+INSERT INTO Administradores (username, password, correo)
+VALUES ('admin', '$2b$10$IjGj9YbWD9f5.NpchpU01.noD3w30jJUpG1WY2J3T52MdLy4Vs7cu', 'admin@example.com');
 
 -- Tabla Reservistas
 CREATE TABLE Reservistas (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     nombres VARCHAR(100) NOT NULL,
-    correo VARCHAR(100) NOT NULL UNIQUE,
+    correo VARCHAR(100) NOT NULL,
     fecha_nacimiento DATE NOT NULL,
     genero ENUM('M', 'F') NOT NULL,
     tipo_documento_id INT UNSIGNED NOT NULL,
@@ -39,7 +51,7 @@ CREATE TABLE Reservistas (
 CREATE TABLE Contacto_Emergencia (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     nombres VARCHAR(100) NOT NULL,
-    telefono VARCHAR(20) NOT NULL,
+    telefono_contacto VARCHAR(20) NOT NULL,
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -61,11 +73,31 @@ CREATE TABLE Tipos_Habitaciones (
     fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+-- Tabla Ubicaciones_Habitaciones
+CREATE TABLE Ubicaciones_Habitaciones (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    ciudad VARCHAR(100) NOT NULL UNIQUE ,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Tabla de Direcciones Ubicaciones
+CREATE TABLE Direcciones_Ubicaciones(
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id_ubicacion_habitacion INT UNSIGNED NOT NULL,
+    direccion VARCHAR(100) NOT NULL UNIQUE ,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_ubicacion_habitacion) REFERENCES Ubicaciones_Habitaciones(id)
+);
+
+
 -- Tabla Habitaciones
 CREATE TABLE Habitaciones (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     id_hotel INT UNSIGNED NOT NULL,
     id_tipo_habitacion INT UNSIGNED NOT NULL,
+    id_ubicacion_habitacion INT UNSIGNED,
     valor DECIMAL(10,2) NOT NULL,
     habilitado TINYINT(1) NOT NULL DEFAULT 1,
     impuestos DECIMAL(5,2) NOT NULL,
@@ -73,7 +105,8 @@ CREATE TABLE Habitaciones (
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (id_hotel) REFERENCES Hoteles(id),
-    FOREIGN KEY (id_tipo_habitacion) REFERENCES Tipos_Habitaciones(id)
+    FOREIGN KEY (id_tipo_habitacion) REFERENCES Tipos_Habitaciones(id),
+    FOREIGN KEY (id_ubicacion_habitacion) REFERENCES Ubicaciones_Habitaciones(id)
 );
 
 -- Tabla Reservas
@@ -85,10 +118,10 @@ CREATE TABLE Reservas (
     fecha_inicio_reserva DATE NOT NULL,
     fecha_fin_reserva DATE NOT NULL,
     cantidad_personas INT NOT NULL,
-    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     total_pagado DECIMAL(10,2),
     habilitado TINYINT(1) NOT NULL DEFAULT 1,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (id_reservista) REFERENCES Reservistas(id),
     FOREIGN KEY (id_habitacion) REFERENCES Habitaciones(id),
     FOREIGN KEY (id_contacto_emergencia) REFERENCES Contacto_Emergencia(id)
@@ -104,22 +137,10 @@ CREATE TABLE Huespedes (
     genero ENUM('M', 'F') NOT NULL,
     tipo_documento_id INT UNSIGNED,
     numero_documento VARCHAR(20),
-    email VARCHAR(100),
+    correo VARCHAR(100),
     telefono_contacto VARCHAR(20),
-    FOREIGN KEY (id_reserva) REFERENCES Reservas(id),
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (id_reservista) REFERENCES Reservistas(id),
     FOREIGN KEY (tipo_documento_id) REFERENCES Tipos_Documento(id)
 );
-
--- Tabla Ubicaciones_Habitaciones
-CREATE TABLE Ubicaciones_Habitaciones (
-    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    id_habitacion INT UNSIGNED NOT NULL,
-    ciudad VARCHAR(100) NOT NULL,
-    direccion VARCHAR(200) NOT NULL,
-    coordenadas POINT,
-    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_habitacion) REFERENCES Habitaciones(id)
-);
-
