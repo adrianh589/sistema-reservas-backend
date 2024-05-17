@@ -145,7 +145,7 @@ const crearReserva = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         });
         return res.json({
             ok: true,
-            msg: 'Reserva creada correctamente, se ha enviado un email de confirmación al correo del reservista, muchas gracias.',
+            msg: 'Reserva creada correctamente, se ha enviado un email de confirmación al correo del reservista, porfavor revisar la categoría SPAM, muchas gracias.',
             reserva: nuevaReserva
         });
     }

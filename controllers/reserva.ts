@@ -147,7 +147,7 @@ export const crearReserva = async (req: Request, res: Response) => {
 
         return res.json({
             ok: true,
-            msg: 'Reserva creada correctamente, se ha enviado un email de confirmación al correo del reservista, muchas gracias.',
+            msg: 'Reserva creada correctamente, se ha enviado un email de confirmación al correo del reservista, porfavor revisar la categoría SPAM, muchas gracias.',
             reserva: nuevaReserva
         });
     } catch (error) {
