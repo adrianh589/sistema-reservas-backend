@@ -28,8 +28,7 @@ const Reservista = connection_1.default.define('Reservista', {
     },
     correo: {
         type: sequelize_1.DataTypes.STRING(100),
-        allowNull: false,
-        unique: true
+        allowNull: false
     },
     fecha_nacimiento: {
         type: sequelize_1.DataTypes.DATE,

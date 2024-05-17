@@ -8,7 +8,7 @@ interface DecodedToken {
 }
 
 // Interfaz que extiende la interfaz Request para incluir los datos de usuario decodificados del token
-interface RequestWithUserData extends Request {
+export interface RequestWithUserData extends Request {
     username?: string;
     correo?: string;
 }

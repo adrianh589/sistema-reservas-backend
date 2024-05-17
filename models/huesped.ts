@@ -13,7 +13,7 @@ interface HuespedAttributes {
     genero: 'M' | 'F';
     tipo_documento_id?: number;
     numero_documento?: string;
-    email?: string;
+    correo?: string;
     telefono_contacto?: string;
 }
 
@@ -29,14 +29,14 @@ class HuespedClass extends Model<HuespedAttributes> implements HuespedAttributes
     public genero!: 'M' | 'F';
     public tipo_documento_id?: number;
     public numero_documento?: string;
-    public email?: string;
+    public correo?: string;
     public telefono_contacto?: string;
 }
 
 /**
  * Modelo que representa la tabla Huesped
  */
-const Huesped = db.define('Huespedes', {
+const Huesped = db.define('Huesped', {
     id: {
         type: DataTypes.INTEGER.UNSIGNED,
         autoIncrement: true,
@@ -74,7 +74,7 @@ const Huesped = db.define('Huespedes', {
         type: DataTypes.STRING(20),
         allowNull: true
     },
-    email: {
+    correo: {
         type: DataTypes.STRING(100),
         allowNull: true
     },

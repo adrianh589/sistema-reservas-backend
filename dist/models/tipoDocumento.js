@@ -8,7 +8,7 @@ const connection_1 = __importDefault(require("../db/connection"));
 /**
  * Modelo que representa la tabla Tipos_Documento
  */
-const TiposDocumento = connection_1.default.define('TipoDocumentos', {
+const TiposDocumento = connection_1.default.define('TipoDocumento', {
     id: {
         type: sequelize_1.DataTypes.INTEGER.UNSIGNED,
         autoIncrement: true,

@@ -42,6 +42,16 @@ export const getHotel = async (req: Request, res: Response) => {
 export const crearHotel = async (req: Request, res: Response) => {
     const { body } = req;
     try {
+
+        // Verificar si ya existe un hotel con el mismo nombre
+        const hotelExistente = await Hotel.findOne({ where: body });
+        if (hotelExistente) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'Ya existe un hotel con el mismo nombre'
+            });
+        }
+
         const hotel = await Hotel.create(body);
         res.json({
             ok: true,
@@ -90,10 +100,16 @@ export const eliminarHotel = async (req: Request, res: Response) => {
     try {
         const hotel = await Hotel.findByPk(id);
         if (!hotel) {
-            return res.status(404).json({ message: 'Hotel no encontrado' });
+            return res.status(404).json({
+                ok: false,
+                msg: 'Hotel no encontrado'
+            });
         }
         await hotel.destroy();
-        res.json({ ok: true, message: 'Hotel eliminado correctamente' });
+        res.json({
+            ok: true,
+            msg: 'Hotel eliminado correctamente'
+        });
     } catch (error) {
         console.error(error);
         res.status(500).json({

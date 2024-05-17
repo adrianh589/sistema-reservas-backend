@@ -1,11 +1,14 @@
-import { DataTypes, Model } from 'sequelize';
+import {DataTypes, Model} from 'sequelize';
 import db from '../db/connection';
 import TipoHabitacion from './tipoHabitacion';
+import Hotel from "./hotel";
+import UbicacionHabitacion from "./ubicacionHabitacion";
 
-interface HabitacionAttributes {
+export interface HabitacionAttributes {
     id: number;
     id_hotel: number;
     id_tipo_habitacion: number;
+    id_ubicacion_habitacion: number;
     valor: number;
     habilitado: boolean;
     impuestos: number;
@@ -19,10 +22,11 @@ interface HabitacionAttributes {
  * Modelo que representa la tabla Habitacion en TypeScript
  */
 
-class HabitacionClass extends Model<HabitacionAttributes> implements HabitacionAttributes {
+export class HabitacionClass extends Model<HabitacionAttributes> implements HabitacionAttributes {
     public id!: number;
     public id_hotel!: number;
     public id_tipo_habitacion!: number;
+    public id_ubicacion_habitacion!: number;
     public valor!: number;
     public habilitado!: boolean;
     public impuestos!: number;
@@ -35,7 +39,7 @@ class HabitacionClass extends Model<HabitacionAttributes> implements HabitacionA
  * Modelo que representa la tabla Habitacion
  */
 
-const Habitacion = db.define('Habitaciones', {
+const Habitacion = db.define('Habitacion', {
     id: {
         type: DataTypes.INTEGER.UNSIGNED,
         autoIncrement: true,
@@ -45,7 +49,7 @@ const Habitacion = db.define('Habitaciones', {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
         references: {
-            model: 'Hoteles',
+            model: 'Hotel',
             key: 'id'
         }
     },
@@ -53,7 +57,15 @@ const Habitacion = db.define('Habitaciones', {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
         references: {
-            model: TipoHabitacion,
+            model: 'TipoHabitacion',
+            key: 'id'
+        }
+    },
+    id_ubicacion_habitacion: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: true,
+        references: {
+            model: 'UbicacionHabitacion',
             key: 'id'
         }
     },
@@ -88,5 +100,9 @@ const Habitacion = db.define('Habitaciones', {
     tableName: 'Habitaciones',
     timestamps: false
 });
+
+Habitacion.belongsTo(Hotel, {foreignKey: 'id_hotel'});
+Habitacion.belongsTo(TipoHabitacion, {foreignKey: 'id_tipo_habitacion'});
+Habitacion.belongsTo(UbicacionHabitacion, {foreignKey: 'id_ubicacion_habitacion'});
 
 export default Habitacion;

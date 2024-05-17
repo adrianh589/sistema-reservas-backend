@@ -61,9 +61,19 @@ export const getTipoHabitacion = async (req: Request, res: Response) => {
  * @returns Una respuesta JSON con el tipo de habitación creado.
  */
 export const crearTipoHabitacion = async (req: Request, res: Response) => {
-    const { nombre } = req.body;
+    const { body } = req;
     try {
-        const tipoHabitacion = await TipoHabitacion.create({ nombre });
+
+        // Verificar si ya existe un hotel con el mismo nombre
+        const tipoHabitacionExistente = await TipoHabitacion.findOne({ where: body });
+        if (tipoHabitacionExistente) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'Ya existe un tipo de habitación con el mismo nombre'
+            });
+        }
+
+        const tipoHabitacion = await TipoHabitacion.create( body );
         res.json({
             ok: true,
             msg: 'Tipo de habitación creado correctamente',

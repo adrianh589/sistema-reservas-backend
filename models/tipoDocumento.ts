@@ -4,7 +4,7 @@ import db from "../db/connection";
 /**
  * Modelo que representa la tabla Tipos_Documento
  */
-const TiposDocumento = db.define('TipoDocumentos', {
+const TiposDocumento = db.define('TipoDocumento', {
         id: {
             type: DataTypes.INTEGER.UNSIGNED,
             autoIncrement: true,

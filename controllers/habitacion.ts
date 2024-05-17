@@ -1,5 +1,9 @@
 import { Request, Response } from 'express';
-import Habitacion from '../models/habitacion';
+import Habitacion, {HabitacionAttributes, HabitacionClass} from '../models/habitacion';
+import Hotel from "../models/hotel";
+import TipoHabitacion from "../models/tipoHabitacion";
+import UbicacionHabitacion from "../models/ubicacionHabitacion";
+import {Op, Sequelize} from "sequelize";
 
 /**
  * Controladores para gestionar las habitaciones.
@@ -13,8 +17,9 @@ import Habitacion from '../models/habitacion';
  */
 export const getHabitaciones = async (req: Request, res: Response) => {
     try {
-        const habitaciones = await Habitacion.findAll();
+        const habitaciones = await Habitacion.findAll({ include: [ Hotel, TipoHabitacion, UbicacionHabitacion ] });
         res.json({
+            ok: true,
             msg: 'Habitaciones encontradas',
             habitaciones
         });
@@ -36,7 +41,7 @@ export const getHabitaciones = async (req: Request, res: Response) => {
 export const getHabitacion = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const habitacion = await Habitacion.findByPk(id);
+        const habitacion = await Habitacion.findByPk(id, { include: [ Hotel, TipoHabitacion, UbicacionHabitacion ] });
         if (!habitacion) {
             return res.status(404).json({
                 ok: false,
@@ -66,8 +71,24 @@ export const getHabitacion = async (req: Request, res: Response) => {
 export const crearHabitacion = async (req: Request, res: Response) => {
     const { body } = req;
     try {
+
+        // Buscar si ya existe una habitación con el mismo número para el hotel
+        const habitacionExistente = await Habitacion.findOne({
+            where: {
+                numero_habitacion: body.numero_habitacion,
+                id_hotel: body.id_hotel
+            }
+        });
+
+        if (habitacionExistente) {
+            return res.status(409).json({
+                ok: false,
+                msg: 'Ya existe una habitación con el mismo número de habitación para este hotel'
+            });
+        }
+
         const habitacion = await Habitacion.create(body);
-        res.json({
+        return res.json({
             ok: true,
             msg: 'Habitación creada correctamente',
             habitacion
@@ -143,3 +164,55 @@ export const eliminarHabitacion = async (req: Request, res: Response) => {
         });
     }
 }
+
+/**
+ * Controlador para obtener las habitaciones disponibles según las fechas de entrada y salida y opcionalmente la ciudad.
+ */
+export const getHabitacionesDisponibles = async (req: Request, res: Response) => {
+    const { fechaEntrada, fechaSalida, ciudad } = req.body;
+
+    try {
+        // Definir las condiciones de la consulta
+        const condiciones: any = {
+            id: {
+                [Op.notIn]: [
+                    Sequelize.literal(`
+                        SELECT id_habitacion
+                        FROM Reservas
+                        WHERE fecha_fin_reserva >= '${fechaEntrada}' AND fecha_inicio_reserva <= '${fechaSalida}'
+                    `)
+                ]
+            },
+            habilitado: true // Asegurarse de que la habitación esté habilitada
+        };
+
+        // Consultar las habitaciones que cumplen con las condiciones
+        let habitacionesDisponibles: any = await Habitacion.findAll({
+            where: condiciones,
+            include: [
+                {
+                    model: Hotel,
+                    where: { habilitado: true }, // Asegurarse de que el hotel esté habilitado
+                },
+                TipoHabitacion,
+                UbicacionHabitacion
+            ]
+        });
+
+        if (ciudad) {
+            habitacionesDisponibles = habitacionesDisponibles.filter( (habitacion: HabitacionAttributes) => habitacion.id_ubicacion_habitacion == ciudad );
+        }
+
+        res.json({
+            ok: true,
+            msg: 'Habitaciones disponibles encontradas',
+            habitacionesDisponibles
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Hubo un error, hable con el administrador',
+        });
+    }
+};

@@ -2,7 +2,7 @@ import {DataTypes, Model, Optional} from 'sequelize';
 import db from '../db/connection';
 import TipoDocumento from "./tipoDocumento";
 
-interface ReservistaAttributes {
+export interface ReservistaAttributes {
     id: number;
     nombres: string;
     correo: string;
@@ -20,23 +20,21 @@ interface ReservistaAttributes {
  */
 export class ReservistaClass extends Model<ReservistaAttributes> implements ReservistaAttributes {
     public id!: number;
-    public username!: string;
-    public password!: string;
+    public nombres!: string;
     public correo!: string;
-    public fecha_creacion!: Date;
-    public fecha_modificacion!: Date;
     public fecha_nacimiento!: Date;
     public genero!: "M" | "F";
-    public nombres!: string;
+    public tipo_documento_id!: number;
     public numero_documento!: string;
     public telefono_contacto!: string;
-    public tipo_documento_id!: number;
+    public fecha_creacion!: Date;
+    public fecha_modificacion!: Date;
 }
 
 /**
  * Modelo que representa la tabla Reservista
  */
-const Reservista = db.define('Reservista', {
+const Reservista = db.define<ReservistaClass>('Reservista', {
     id: {
         type: DataTypes.INTEGER.UNSIGNED,
         autoIncrement: true,
@@ -48,8 +46,7 @@ const Reservista = db.define('Reservista', {
     },
     correo: {
         type: DataTypes.STRING(100),
-        allowNull: false,
-        unique: true
+        allowNull: false
     },
     fecha_nacimiento: {
         type: DataTypes.DATE,

@@ -12,7 +12,8 @@ import huespedRoutes from '../routes/huesped';
 import ubicacionHabitacionRoutes from '../routes/ubicacionHabitacion';
 import cors from 'cors';
 import db from "../db/connection";
-import ubicacionHabitacion from "./ubicacionHabitacion";
+import direccionUbicacionRoutes from "../routes/direccionHabitacion";
+import enviarEmailRoutes from "../routes/emailService";
 
 /**
  * Clase que representa un servidor Express.
@@ -31,7 +32,9 @@ class Server {
         habitaciones: '/api/habitaciones',
         reservas: '/api/reservas',
         huespedes: '/api/huespedes',
-        ubicacionHabitacion: '/api/ubicacion-habitacion',
+        ciudades: '/api/ciudades',
+        direcciones: '/api/direcciones',
+        email: '/api/enviar-email',
     }
 
     /**
@@ -107,8 +110,12 @@ class Server {
         this.app.use(this.apiPaths.reservas, reservasRoutes);
         // Rutas huespedes
         this.app.use(this.apiPaths.huespedes, huespedRoutes);
-        // Rutas ubicaciones habitacion
-        this.app.use(this.apiPaths.habitaciones, ubicacionHabitacionRoutes);
+        // Rutas ciudades
+        this.app.use(this.apiPaths.ciudades, ubicacionHabitacionRoutes);
+        // Rutas para las direcciones
+        this.app.use(this.apiPaths.direcciones, direccionUbicacionRoutes);
+        // Ruta email
+        this.app.use(this.apiPaths.email, enviarEmailRoutes);
     }
 
     /**

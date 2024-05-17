@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import generateJWT from "../helpers/jwt";
 import bcrypt from 'bcrypt';
 import Administrador, {AdministradorClass} from "../models/administrador";
+import {RequestWithUserData} from "../middlewares/validar-jwt";
 
 /**
  * Controlador para iniciar sesión de un usuario.
@@ -50,3 +51,33 @@ export const login = async (req: Request, res: Response) => {
         });
     }
 };
+
+export const renewToken = async ( req: RequestWithUserData, res: Response ) => {
+
+    try{
+        console.log(req.username);
+        console.log(req.correo);
+        if (req.username && req.correo) {
+            const token = await generateJWT( req.username, req.correo );
+
+            return res.json({
+                ok: true,
+                msg: 'Token renovado',
+                token
+            });
+        }
+
+        return res.status(500).json({
+            ok: false,
+            msg: 'Error en el servidor con los parametros del token'
+        });
+    } catch (error){
+        console.error(error);
+        return res.status(500).json({
+            ok: false,
+            msg: 'Error en el servidor'
+        });
+    }
+
+
+}

@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../db/connection"));
-const habitacion_1 = __importDefault(require("./habitacion"));
 /**
  * Modelo que representa la tabla Ubicaciones_Habitaciones
  */
@@ -17,21 +16,9 @@ const UbicacionHabitacion = connection_1.default.define('UbicacionHabitacion', {
         autoIncrement: true,
         primaryKey: true,
     },
-    id_habitacion: {
-        type: sequelize_1.DataTypes.INTEGER.UNSIGNED,
-        allowNull: false,
-    },
     ciudad: {
         type: sequelize_1.DataTypes.STRING(100),
         allowNull: false,
-    },
-    direccion: {
-        type: sequelize_1.DataTypes.STRING(200),
-        allowNull: false,
-    },
-    coordenadas: {
-        type: sequelize_1.DataTypes.GEOMETRY('POINT'),
-        allowNull: true,
     },
     fecha_creacion: {
         type: sequelize_1.DataTypes.DATE,
@@ -44,8 +31,7 @@ const UbicacionHabitacion = connection_1.default.define('UbicacionHabitacion', {
     },
 }, {
     tableName: 'Ubicaciones_Habitaciones',
-    timestamps: false, // Opcional si no necesitas createdAt y updatedAt
+    timestamps: false,
 });
-UbicacionHabitacion.belongsTo(habitacion_1.default, { foreignKey: 'id_habitacion' });
 exports.default = UbicacionHabitacion;
 //# sourceMappingURL=ubicacionHabitacion.js.map

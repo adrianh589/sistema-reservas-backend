@@ -57,6 +57,14 @@ exports.getHotel = getHotel;
 const crearHotel = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { body } = req;
     try {
+        // Verificar si ya existe un hotel con el mismo nombre
+        const hotelExistente = yield hotel_1.default.findOne({ where: body });
+        if (hotelExistente) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'Ya existe un hotel con el mismo nombre'
+            });
+        }
         const hotel = yield hotel_1.default.create(body);
         res.json({
             ok: true,
@@ -107,10 +115,16 @@ const eliminarHotel = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     try {
         const hotel = yield hotel_1.default.findByPk(id);
         if (!hotel) {
-            return res.status(404).json({ message: 'Hotel no encontrado' });
+            return res.status(404).json({
+                ok: false,
+                msg: 'Hotel no encontrado'
+            });
         }
         yield hotel.destroy();
-        res.json({ ok: true, message: 'Hotel eliminado correctamente' });
+        res.json({
+            ok: true,
+            msg: 'Hotel eliminado correctamente'
+        });
     }
     catch (error) {
         console.error(error);

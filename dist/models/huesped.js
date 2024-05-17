@@ -16,7 +16,7 @@ class HuespedClass extends sequelize_1.Model {
 /**
  * Modelo que representa la tabla Huesped
  */
-const Huesped = connection_1.default.define('Huespedes', {
+const Huesped = connection_1.default.define('Huesped', {
     id: {
         type: sequelize_1.DataTypes.INTEGER.UNSIGNED,
         autoIncrement: true,
@@ -54,7 +54,7 @@ const Huesped = connection_1.default.define('Huespedes', {
         type: sequelize_1.DataTypes.STRING(20),
         allowNull: true
     },
-    email: {
+    correo: {
         type: sequelize_1.DataTypes.STRING(100),
         allowNull: true
     },

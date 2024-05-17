@@ -1,19 +1,21 @@
 import { Router } from 'express';
 import {
     actualizarUbicacionHabitacion,
-    crearUbicacionHabitacion, eliminarUbicacionHabitacion,
+    crearUbicacionHabitacion,
+    eliminarUbicacionHabitacion,
     getUbicacionesHabitaciones,
     getUbicacionHabitacion,
 } from '../controllers/ubicacionHabitacion';
+import validarJWT from "../middlewares/validar-jwt";
 
 const router = Router();
 
-// Rutas para las ubicaciones de habitaciones
+// Rutas para las ciudades
 router.get('/', getUbicacionesHabitaciones);
 router.get('/:id', getUbicacionHabitacion);
-router.post('/', crearUbicacionHabitacion);
-router.put('/:id', actualizarUbicacionHabitacion);
-router.delete('/:id', eliminarUbicacionHabitacion);
+router.post('/', validarJWT, crearUbicacionHabitacion);
+router.put('/:id', validarJWT, actualizarUbicacionHabitacion);
+router.delete('/:id', validarJWT, eliminarUbicacionHabitacion);
 
 
 export default router;

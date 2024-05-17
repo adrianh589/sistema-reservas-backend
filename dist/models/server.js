@@ -26,6 +26,8 @@ const huesped_1 = __importDefault(require("../routes/huesped"));
 const ubicacionHabitacion_1 = __importDefault(require("../routes/ubicacionHabitacion"));
 const cors_1 = __importDefault(require("cors"));
 const connection_1 = __importDefault(require("../db/connection"));
+const direccionHabitacion_1 = __importDefault(require("../routes/direccionHabitacion"));
+const emailService_1 = __importDefault(require("../routes/emailService"));
 /**
  * Clase que representa un servidor Express.
  */
@@ -48,7 +50,9 @@ class Server {
             habitaciones: '/api/habitaciones',
             reservas: '/api/reservas',
             huespedes: '/api/huespedes',
-            ubicacionHabitacion: '/api/ubicacion-habitacion',
+            ciudades: '/api/ciudades',
+            direcciones: '/api/direcciones',
+            email: '/api/enviar-email',
         };
         this.app = (0, express_1.default)();
         this.port = process.env.PORT || '4000';
@@ -113,8 +117,12 @@ class Server {
         this.app.use(this.apiPaths.reservas, reserva_1.default);
         // Rutas huespedes
         this.app.use(this.apiPaths.huespedes, huesped_1.default);
-        // Rutas ubicaciones habitacion
-        this.app.use(this.apiPaths.habitaciones, ubicacionHabitacion_1.default);
+        // Rutas ciudades
+        this.app.use(this.apiPaths.ciudades, ubicacionHabitacion_1.default);
+        // Rutas para las direcciones
+        this.app.use(this.apiPaths.direcciones, direccionHabitacion_1.default);
+        // Ruta email
+        this.app.use(this.apiPaths.email, emailService_1.default);
     }
     /**
      * Inicia el servidor Express y lo hace escuchar en el puerto especificado.

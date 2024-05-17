@@ -25,7 +25,7 @@ class HotelClass extends Model<HotelAttributes> implements HotelAttributes {
 /**
  * Modelo que representa la tabla Hotel
  */
-const Hotel = db.define('Hoteles', {
+const Hotel = db.define('Hotel', {
     id: {
         type: DataTypes.INTEGER.UNSIGNED,
         autoIncrement: true,

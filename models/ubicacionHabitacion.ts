@@ -7,10 +7,7 @@ import Habitacion from './habitacion';
  */
 interface UbicacionHabitacionAttributes {
     id: number;
-    id_habitacion: number;
     ciudad: string;
-    direccion: string;
-    coordenadas: string;
     fecha_creacion: Date;
     fecha_modificacion: Date;
 }
@@ -21,10 +18,7 @@ interface UbicacionHabitacionAttributes {
  */
 class UbicacionHabitacionClass extends Model<UbicacionHabitacionAttributes> implements UbicacionHabitacionAttributes {
     public id!: number;
-    public id_habitacion!: number;
     public ciudad!: string;
-    public direccion!: string;
-    public coordenadas!: string;
     public fecha_creacion!: Date;
     public fecha_modificacion!: Date;
 }
@@ -35,21 +29,9 @@ const UbicacionHabitacion = db.define('UbicacionHabitacion', {
             autoIncrement: true,
             primaryKey: true,
         },
-        id_habitacion: {
-            type: DataTypes.INTEGER.UNSIGNED,
-            allowNull: false,
-        },
         ciudad: {
             type: DataTypes.STRING(100),
             allowNull: false,
-        },
-        direccion: {
-            type: DataTypes.STRING(200),
-            allowNull: false,
-        },
-        coordenadas: {
-            type: DataTypes.GEOMETRY('POINT'),
-            allowNull: true,
         },
         fecha_creacion: {
             type: DataTypes.DATE,
@@ -63,10 +45,8 @@ const UbicacionHabitacion = db.define('UbicacionHabitacion', {
     },
     {
         tableName: 'Ubicaciones_Habitaciones',
-        timestamps: false, // Opcional si no necesitas createdAt y updatedAt
+        timestamps: false,
     }
 );
-
-UbicacionHabitacion.belongsTo(Habitacion, { foreignKey: 'id_habitacion' });
 
 export default UbicacionHabitacion;

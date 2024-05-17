@@ -76,9 +76,17 @@ exports.getTipoHabitacion = getTipoHabitacion;
  * @returns Una respuesta JSON con el tipo de habitación creado.
  */
 const crearTipoHabitacion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { nombre } = req.body;
+    const { body } = req;
     try {
-        const tipoHabitacion = yield tipoHabitacion_1.default.create({ nombre });
+        // Verificar si ya existe un hotel con el mismo nombre
+        const tipoHabitacionExistente = yield tipoHabitacion_1.default.findOne({ where: body });
+        if (tipoHabitacionExistente) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'Ya existe un tipo de habitación con el mismo nombre'
+            });
+        }
+        const tipoHabitacion = yield tipoHabitacion_1.default.create(body);
         res.json({
             ok: true,
             msg: 'Tipo de habitación creado correctamente',

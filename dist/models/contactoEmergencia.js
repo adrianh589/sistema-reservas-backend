@@ -25,7 +25,7 @@ const ContactoEmergencia = connection_1.default.define('ContactoEmergencia', {
         type: sequelize_1.DataTypes.STRING(100),
         allowNull: false
     },
-    telefono: {
+    telefono_contacto: {
         type: sequelize_1.DataTypes.STRING(20),
         allowNull: false
     },

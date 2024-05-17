@@ -13,7 +13,7 @@ class HotelClass extends sequelize_1.Model {
 /**
  * Modelo que representa la tabla Hotel
  */
-const Hotel = connection_1.default.define('Hoteles', {
+const Hotel = connection_1.default.define('Hotel', {
     id: {
         type: sequelize_1.DataTypes.INTEGER.UNSIGNED,
         autoIncrement: true,

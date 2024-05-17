@@ -6,6 +6,7 @@ import {
     actualizarReserva,
     eliminarReserva
 } from '../controllers/reserva';
+import validarJWT from "../middlewares/validar-jwt";
 
 const router = Router();
 
@@ -14,18 +15,18 @@ const router = Router();
  */
 
 // Obtiene todas las reservas.
-router.get('/', getReservas);
+router.get('/', validarJWT, getReservas);
 
 // Obtiene una reserva por su ID.
-router.get('/:id', getReserva);
+router.get('/:id', validarJWT, getReserva);
 
 // Crea una nueva reserva.
 router.post('/', crearReserva);
 
 // Actualiza una reserva por su ID.
-router.put('/:id', actualizarReserva);
+router.put('/:id', validarJWT, actualizarReserva);
 
 // Elimina una reserva por su ID.
-router.delete('/:id', eliminarReserva);
+router.delete('/:id', validarJWT, eliminarReserva);
 
 export default router;

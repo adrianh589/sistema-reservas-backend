@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.login = void 0;
+exports.renewToken = exports.login = void 0;
 const jwt_1 = __importDefault(require("../helpers/jwt"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const administrador_1 = __importDefault(require("../models/administrador"));
@@ -59,4 +59,30 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.login = login;
+const renewToken = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        console.log(req.username);
+        console.log(req.correo);
+        if (req.username && req.correo) {
+            const token = yield (0, jwt_1.default)(req.username, req.correo);
+            return res.json({
+                ok: true,
+                msg: 'Token renovado',
+                token
+            });
+        }
+        return res.status(500).json({
+            ok: false,
+            msg: 'Error en el servidor con los parametros del token'
+        });
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            ok: false,
+            msg: 'Error en el servidor'
+        });
+    }
+});
+exports.renewToken = renewToken;
 //# sourceMappingURL=auth.js.map

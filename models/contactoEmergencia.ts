@@ -4,7 +4,7 @@ import db from '../db/connection';
 interface ContactoEmergenciaAttributes {
     id: number;
     nombres: string;
-    telefono: string;
+    telefono_contacto: string;
     fecha_creacion: Date;
     fecha_modificacion: Date;
 }
@@ -16,7 +16,7 @@ interface ContactoEmergenciaAttributes {
 export class ContactoEmergenciaClass extends Model<ContactoEmergenciaAttributes> implements ContactoEmergenciaAttributes {
     public id!: number;
     public nombres!: string;
-    public telefono!: string;
+    public telefono_contacto!: string;
     public fecha_creacion!: Date;
     public fecha_modificacion!: Date;
 }
@@ -25,7 +25,7 @@ export class ContactoEmergenciaClass extends Model<ContactoEmergenciaAttributes>
  * Modelo que representa la tabla Contacto_Emergencia
  */
 
-const ContactoEmergencia = db.define('ContactoEmergencia', {
+const ContactoEmergencia = db.define<ContactoEmergenciaClass>('ContactoEmergencia', {
     id: {
         type: DataTypes.INTEGER.UNSIGNED,
         autoIncrement: true,
@@ -35,7 +35,7 @@ const ContactoEmergencia = db.define('ContactoEmergencia', {
         type: DataTypes.STRING(100),
         allowNull: false
     },
-    telefono: {
+    telefono_contacto: {
         type: DataTypes.STRING(20),
         allowNull: false
     },

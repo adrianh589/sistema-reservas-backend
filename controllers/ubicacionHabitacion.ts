@@ -9,13 +9,13 @@ import UbicacionHabitacion from '../models/ubicacionHabitacion';
  */
 export const getUbicacionesHabitaciones = async (req: Request, res: Response) => {
     try {
-        const ubicaciones = await UbicacionHabitacion.findAll();
+        const ciudades = await UbicacionHabitacion.findAll();
         res.json({
-            msg: 'Ubicaciones de habitaciones encontradas',
-            ubicaciones,
+            msg: 'Ciudades de habitaciones encontradas',
+            ciudades,
         });
     } catch (error) {
-        console.error('Error al obtener las ubicaciones de habitaciones:', error);
+        console.error('Error al obtener las Ciudades de habitaciones:', error);
         res.status(500).json({
             ok: false,
             msg: 'Hubo un error al obtener las ubicaciones de habitaciones',
@@ -32,20 +32,20 @@ export const getUbicacionesHabitaciones = async (req: Request, res: Response) =>
 export const getUbicacionHabitacion = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
-        const ubicacion = await UbicacionHabitacion.findByPk(id);
-        if (!ubicacion) {
+        const ciudad = await UbicacionHabitacion.findByPk(id);
+        if (!ciudad) {
             return res.status(404).json({
                 ok: false,
-                msg: `No se encontró una ubicación de habitación con el ID ${id}`,
+                msg: `No se encontró una Ciudad de habitación con el ID ${id}`,
             });
         }
         res.json({
             ok: true,
-            msg: 'Ubicación de habitación encontrada',
-            ubicacion,
+            msg: 'Ciudad de habitación encontrada',
+            ciudad,
         });
     } catch (error) {
-        console.error('Error al obtener la ubicación de habitación:', error);
+        console.error('Error al obtener la Ciudad de habitación:', error);
         res.status(500).json({
             ok: false,
             msg: 'Hubo un error al obtener la ubicación de habitación',
@@ -62,17 +62,17 @@ export const getUbicacionHabitacion = async (req: Request, res: Response) => {
 export const crearUbicacionHabitacion = async (req: Request, res: Response) => {
     const { body } = req;
     try {
-        const ubicacion = await UbicacionHabitacion.create(body);
+        const ciudad = await UbicacionHabitacion.create(body);
         res.status(201).json({
             ok: true,
-            msg: 'Ubicación de habitación creada correctamente',
-            ubicacion,
+            msg: 'Ciudad de habitación creada correctamente',
+            ciudad,
         });
     } catch (error) {
-        console.error('Error al crear la ubicación de habitación:', error);
+        console.error('Error al crear la Ciudad de habitación:', error);
         res.status(500).json({
             ok: false,
-            msg: 'Hubo un error al crear la ubicación de habitación',
+            msg: 'Hubo un error al crear la Ciudad de habitación',
         });
     }
 }
@@ -87,21 +87,21 @@ export const actualizarUbicacionHabitacion = async (req: Request, res: Response)
     const { id } = req.params;
     const { body } = req;
     try {
-        const ubicacion = await UbicacionHabitacion.findByPk(id);
-        if (!ubicacion) {
+        const ciudad = await UbicacionHabitacion.findByPk(id);
+        if (!ciudad) {
             return res.status(404).json({
                 ok: false,
-                msg: `No se encontró una ubicación de habitación con el ID ${id}`,
+                msg: `No se encontró una Ciudad de habitación con el ID ${id}`,
             });
         }
-        await ubicacion.update(body);
+        await ciudad.update(body);
         res.json({
             ok: true,
-            msg: 'Ubicación de habitación actualizada correctamente',
-            ubicacion,
+            msg: 'Ciudad de habitación actualizada correctamente',
+            ciudad,
         });
     } catch (error) {
-        console.error('Error al actualizar la ubicación de habitación:', error);
+        console.error('Error al actualizar la Ciudad de habitación:', error);
         res.status(500).json({
             ok: false,
             msg: 'Hubo un error al actualizar la ubicación de habitación',
@@ -118,24 +118,24 @@ export const actualizarUbicacionHabitacion = async (req: Request, res: Response)
 export const eliminarUbicacionHabitacion = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
-        const ubicacion = await UbicacionHabitacion.findByPk(id);
-        if (!ubicacion) {
+        const ciudad = await UbicacionHabitacion.findByPk(id);
+        if (!ciudad) {
             return res.status(404).json({
                 ok: false,
-                msg: `No se encontró una ubicación de habitación con el ID ${id}`,
+                msg: `No se encontró una Ciudad de habitación con el ID ${id}`,
             });
         }
-        await ubicacion.destroy();
+        await ciudad.destroy();
         res.json({
             ok: true,
-            msg: 'Ubicación de habitación eliminada correctamente',
-            ubicacion,
+            msg: 'Ciudad de habitación eliminada correctamente',
+            ciudad,
         });
     } catch (error) {
-        console.error('Error al eliminar la ubicación de habitación:', error);
+        console.error('Error al eliminar la Ciudad de habitación:', error);
         res.status(500).json({
             ok: false,
-            msg: 'Hubo un error al eliminar la ubicación de habitación',
+            msg: 'Hubo un error al eliminar la Ciudad de habitación',
         });
     }
 }
