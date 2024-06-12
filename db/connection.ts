@@ -1,5 +1,6 @@
 import { Dialect, Sequelize } from 'sequelize';
 import 'dotenv/config';
+import fs from "fs";
 
 // Definir tipos para variables de entorno
 interface Env {
@@ -16,6 +17,13 @@ const typedDbConfig = dbConfig as Env; // Convertido a Env
 
 const db = new Sequelize({
     dialect: typedDbConfig.DB_DIALECT as Dialect,
+    dialectOptions: {
+        ssl: {
+            require: true,
+            rejectUnauthorized: false,
+            ca: fs.readFileSync(__dirname + '/../certs/ca-cert.pem').toString(), // Ajusta la ruta según tu estructura de proyecto
+        },
+    },
     host: typedDbConfig.DB_HOST,
     port: parseInt(typedDbConfig.DB_PORT),
     username: typedDbConfig.DB_USERNAME,
