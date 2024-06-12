@@ -16,7 +16,7 @@ const dbConfig: unknown = process.env as unknown; // Acceso a las variables de e
 const typedDbConfig = dbConfig as Env; // Convertido a Env
 
 const db = new Sequelize({
-    dialect: typedDbConfig.DB_DIALECT as Dialect,
+    dialect: 'mysql',
     dialectOptions: {
         ssl: {
             require: true,

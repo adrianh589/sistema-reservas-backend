@@ -9,7 +9,7 @@ const fs_1 = __importDefault(require("fs"));
 const dbConfig = process.env; // Acceso a las variables de entorno
 const typedDbConfig = dbConfig; // Convertido a Env
 const db = new sequelize_1.Sequelize({
-    dialect: typedDbConfig.DB_DIALECT,
+    dialect: 'mysql',
     dialectOptions: {
         ssl: {
             require: true,
