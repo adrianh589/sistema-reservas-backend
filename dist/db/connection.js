@@ -14,7 +14,7 @@ const db = new sequelize_1.Sequelize({
         ssl: {
             require: true,
             rejectUnauthorized: false,
-            ca: fs_1.default.readFileSync(__dirname + '/certs/ca-cert.pem').toString(), // Ajusta la ruta según tu estructura de proyecto
+            ca: fs_1.default.readFileSync(__dirname + '/../certs/ca-cert.pem').toString(),
         },
     },
     host: typedDbConfig.DB_HOST,
