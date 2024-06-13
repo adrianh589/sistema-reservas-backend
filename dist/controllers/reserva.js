@@ -94,7 +94,7 @@ const crearReserva = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         // Verificar que la fecha de fin sea posterior a la fecha de inicio
         const fechaInicio = new Date(reserva.fecha_inicio_reserva);
         const fechaFin = new Date(reserva.fecha_fin_reserva);
-        if (fechaFin <= fechaInicio) {
+        if (fechaFin < fechaInicio) {
             return res.status(400).json({
                 ok: false,
                 msg: 'La fecha de fin de la reserva debe ser posterior a la fecha de inicio'

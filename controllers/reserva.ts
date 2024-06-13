@@ -83,7 +83,7 @@ export const crearReserva = async (req: Request, res: Response) => {
         const fechaInicio = new Date(reserva.fecha_inicio_reserva);
         const fechaFin = new Date(reserva.fecha_fin_reserva);
 
-        if (fechaFin <= fechaInicio) {
+        if (fechaFin < fechaInicio) {
             return res.status(400).json({
                 ok: false,
                 msg: 'La fecha de fin de la reserva debe ser posterior a la fecha de inicio'
